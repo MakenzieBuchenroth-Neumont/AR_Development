@@ -17,6 +17,11 @@ public class BookUIFlip : MonoBehaviour {
 	private Coroutine currentRoutine;
 	private Dictionary<string, Sprite[]> animationDict;
 
+	[SerializeField] GameObject encyclopediaPanel;
+	[SerializeField] GameObject openBookButtonPanel;
+
+	[SerializeField] GameObject ghostInfo;
+
 	void Awake() {
 		// Build dictionary for quick lookup
 		animationDict = new Dictionary<string, Sprite[]>();
@@ -56,9 +61,11 @@ public class BookUIFlip : MonoBehaviour {
 		int step = reverse ? -1 : 1;
 
 		for (int i = start; i != end; i += step) {
+			ghostInfo.SetActive(false);
 			bookImage.sprite = frames[i];
 			yield return new WaitForSeconds(frameDuration);
 		}
+		ghostInfo.SetActive(true);
 	}
 
 	// Helper method for buttons that only pass the animation name (plays forward)
@@ -66,8 +73,13 @@ public class BookUIFlip : MonoBehaviour {
 		PlayAnimation(name, false);
 	}
 
-	public void DebugClick() {
-		Debug.Log($"Button clicked on {gameObject.name}");
+	public void openBook() {
+		openBookButtonPanel.SetActive(false);
+		encyclopediaPanel.SetActive(true);
 	}
 
+	public void closeBook() {
+		openBookButtonPanel.SetActive(true);
+		encyclopediaPanel.SetActive(false);
+	}
 }
