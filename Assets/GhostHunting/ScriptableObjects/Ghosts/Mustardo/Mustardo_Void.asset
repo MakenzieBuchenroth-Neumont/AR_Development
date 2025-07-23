@@ -12,9 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2443765bd300a44199e6d581bdb37ec, type: 3}
   m_Name: Mustardo_Void
   m_EditorClassIdentifier: Assembly-CSharp::EnemyData
-  name: Mustardo The Malignant
+  name: Mustardo P. Gremlin
   type: 4
   variant: 1
+  desc: "The \u201CP\u201D stands for \u201CPungent.\u201D May or may not have been
+    born in a mustard bottle."
+  image: {fileID: 0}
   patrolRadius: 20
   maxPatrolHeight: 5
   patrolCenter: {x: 0, y: 0, z: 0}

@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine.UI;
 
 [CreateAssetMenu(fileName = "EnemyData", menuName = "Scriptable Objects/EnemyData")]
 public class EnemyData : ScriptableObject
@@ -9,6 +10,8 @@ public class EnemyData : ScriptableObject
     public string name;
     public EnemyType type;
     public EnemyVariant variant;
+    public string desc;
+    public Image image;
 
     // Movement Settings
     [SerializeField]

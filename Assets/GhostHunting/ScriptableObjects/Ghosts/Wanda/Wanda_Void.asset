@@ -15,6 +15,9 @@ MonoBehaviour:
   name: Wanda Wontwash
   type: 5
   variant: 1
+  desc: "A self-declared \u201Cfashion icon of the afterlife.\u201D Owns 37 identical
+    stained hats."
+  image: {fileID: 0}
   patrolRadius: 20
   maxPatrolHeight: 5
   patrolCenter: {x: 0, y: 0, z: 0}

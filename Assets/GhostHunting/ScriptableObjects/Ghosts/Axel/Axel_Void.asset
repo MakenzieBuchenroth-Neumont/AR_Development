@@ -12,9 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2443765bd300a44199e6d581bdb37ec, type: 3}
   m_Name: Axel_Void
   m_EditorClassIdentifier: Assembly-CSharp::EnemyData
-  name: Axel The Undecapitated
+  name: Axel Slaughterson
   type: 6
   variant: 1
+  desc: "Claims the axe is a fashion statement. Might be right. Don\u2019t ask how
+    he got it."
+  image: {fileID: 0}
   patrolRadius: 20
   maxPatrolHeight: 5
   patrolCenter: {x: 0, y: 0, z: 0}

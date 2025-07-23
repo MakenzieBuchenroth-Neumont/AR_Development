@@ -15,6 +15,8 @@ MonoBehaviour:
   name: Witch McSheetface
   type: 1
   variant: 1
+  desc: "She thinks she\u2019s casting spells. She's really just flapping dramatically."
+  image: {fileID: 0}
   patrolRadius: 20
   maxPatrolHeight: 5
   patrolCenter: {x: 0, y: 0, z: 0}

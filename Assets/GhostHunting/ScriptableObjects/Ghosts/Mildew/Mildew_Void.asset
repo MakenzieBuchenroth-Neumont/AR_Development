@@ -15,6 +15,9 @@ MonoBehaviour:
   name: Mildew Merv
   type: 2
   variant: 1
+  desc: "He\u2019s been haunting basements for centuries. Smells like wet laundry
+    and regrets."
+  image: {fileID: 0}
   patrolRadius: 20
   maxPatrolHeight: 5
   patrolCenter: {x: 0, y: 0, z: 0}

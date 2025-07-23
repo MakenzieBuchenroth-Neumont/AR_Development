@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -21,6 +22,16 @@ public class BookUIFlip : MonoBehaviour {
 	[SerializeField] GameObject openBookButtonPanel;
 
 	[SerializeField] GameObject ghostInfo;
+
+	[Header("Fields")]
+	[SerializeField] GameObject ghostName;
+	[SerializeField] GameObject image;
+	[SerializeField] GameObject desc;
+	[SerializeField] GameObject encountered;
+	[SerializeField] GameObject caught;
+
+	[SerializeField] EnemyData[] enemyData;
+	int page = 0;
 
 	void Awake() {
 		// Build dictionary for quick lookup
@@ -51,6 +62,13 @@ public class BookUIFlip : MonoBehaviour {
 		currentRoutine = StartCoroutine(PlayFrames(frames, reverse));
 	}
 
+	private void displayGhostInfo(EnemyData data) {
+		ghostName.GetComponentInChildren<TMP_Text>().text = data.name;
+		//image.GetComponentInChildren<Image>().sprite = data.sprite;
+		desc.GetComponentInChildren<TMP_Text>().text = data.desc;
+		//encountered.GetComponentInChildren<TMP_Text>().text = PlayerPrefs.Load(data.encountered);
+		//caught.GetComponentInChildren<TMP_Text>().text = PlayerPrefs.Load(data.caught);
+	}
 
 	private IEnumerator PlayFrames(Sprite[] frames, bool reverse) {
 		if (frames == null || frames.Length == 0)
@@ -72,9 +90,27 @@ public class BookUIFlip : MonoBehaviour {
 	// Helper method for buttons that only pass the animation name (plays forward)
 	public void PlayAnimationByName(string name) {
 		PlayAnimation(name, false);
+		if (name == "Next") {
+			if (page >= enemyData.Length - 1) {
+				page = 0;
+			}
+			else {
+				page++;
+			}
+		}
+		if (name == "Prev") {
+			if (page <= 0) {
+				page = enemyData.Length - 1;
+			}
+			else {
+				page--;
+			}
+		}
+		displayGhostInfo(enemyData[page]);
 	}
 
 	public void openBook() {
+		displayGhostInfo(enemyData[page]);
 		openBookButtonPanel.SetActive(false);
 		encyclopediaPanel.SetActive(true);
 	}

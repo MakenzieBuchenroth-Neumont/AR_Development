@@ -15,6 +15,8 @@ MonoBehaviour:
   name: Sulfur Steve
   type: 3
   variant: 0
+  desc: Tried to join a demon cult once. Got kicked out for being too soft-spoken.
+  image: {fileID: 0}
   patrolRadius: 20
   maxPatrolHeight: 5
   patrolCenter: {x: 0, y: 0, z: 0}

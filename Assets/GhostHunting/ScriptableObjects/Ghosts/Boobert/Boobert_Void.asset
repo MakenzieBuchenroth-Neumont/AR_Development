@@ -12,9 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2443765bd300a44199e6d581bdb37ec, type: 3}
   m_Name: Boobert_Void
   m_EditorClassIdentifier: Assembly-CSharp::EnemyData
-  name: Boobert The Basic
+  name: Boobert Flanegan
   type: 0
   variant: 1
+  desc: "Friendly. Forgettable. Has haunted the same suburban attic since 1987. Thinks
+    he\u2019s scarier than he is."
+  image: {fileID: 0}
   patrolRadius: 20
   maxPatrolHeight: 5
   patrolCenter: {x: 0, y: 0, z: 0}
