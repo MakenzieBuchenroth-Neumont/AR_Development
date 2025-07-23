@@ -61,11 +61,12 @@ public class BookUIFlip : MonoBehaviour {
 		int step = reverse ? -1 : 1;
 
 		for (int i = start; i != end; i += step) {
-			ghostInfo.SetActive(false);
 			bookImage.sprite = frames[i];
+			float rotation = i * 30;
+			//ghostInfo.LeanRotateY(rotation, i);
 			yield return new WaitForSeconds(frameDuration);
 		}
-		ghostInfo.SetActive(true);
+		ghostInfo.LeanRotateY(0, 0.1f);
 	}
 
 	// Helper method for buttons that only pass the animation name (plays forward)
