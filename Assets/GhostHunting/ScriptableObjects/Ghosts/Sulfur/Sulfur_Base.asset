@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a2443765bd300a44199e6d581bdb37ec, type: 3}
-  m_Name: Sulfer_Base
+  m_Name: Sulfur_Base
   m_EditorClassIdentifier: Assembly-CSharp::EnemyData
-  name: Sulfer Steve
+  name: Sulfur Steve
   type: 3
   variant: 0
   patrolRadius: 20
@@ -21,4 +21,5 @@ MonoBehaviour:
   movementSpeed: 10
   rotationSpeed: 200
   waitTime: 0
-  enemyPrefab: {fileID: 0}
+  enemyPrefab: {fileID: 6007180743642840513, guid: 5a796ed211b2cec468ecadad11acb207,
+    type: 3}

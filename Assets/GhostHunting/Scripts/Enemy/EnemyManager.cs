@@ -6,7 +6,7 @@ public enum EnemyType
     Boobert,    // Classic White Sheet Ghost
     Witch,      // White Sheet with Witch Hat
     Mildew,     // Dirtied White Sheet Ghost
-    Sulfer,     // Dirtied Sheet with Devil Horns
+    Sulfur,     // Dirtied Sheet with Devil Horns
     Mustardo,   // Yellow Dirtied Sheet with Devil Horns
     Wanda,      // Yellow Dirtied Sheet with Witch Hat
     Axel        // White Sheet with Axe in Head and Blood
@@ -34,10 +34,7 @@ public class EnemyManager : MonoBehaviour
             Debug.LogError("EnemyDatabase is not assigned in the EnemyManager.");
             return;
         }
-        for (int i = 0; i < 5; i++)
-        {
-            SpawnRandomEnemy();
-        }
+        SpawnRandomEnemies(10);
     }
 
     /* 1. Get random spawn location
@@ -48,35 +45,38 @@ public class EnemyManager : MonoBehaviour
      * 6. Initialize the EnemyController with the selected enemy data
      * 7. Initialize the EnemyMovement with the movement speed and rotation speed from the selected enemy data
      */
-    public void SpawnRandomEnemy()
+    public void SpawnRandomEnemies(int numEnemies)
     {
-        EnemyVariant variance = CalculateVariance();
-        EnemyData enemyData = null;
-        int random;
-        switch (variance)
+        for (int i = 0; i < numEnemies; i++)
         {
-            case EnemyVariant.Base:
-                random = Random.Range(0, enemyDb.baseEnemies.Length);
-                enemyData = enemyDb.baseEnemies[random];
-                break;
-            case EnemyVariant.Void:
-                random = Random.Range(0, enemyDb.voidVarianceEnemies.Length);
-                enemyData = enemyDb.voidVarianceEnemies[random];
-                break;
+            EnemyVariant variance = CalculateVariance();
+            EnemyData enemyData = null;
+            int random;
+            switch (variance)
+            {
+                case EnemyVariant.Base:
+                    random = Random.Range(0, enemyDb.baseEnemies.Length);
+                    enemyData = enemyDb.baseEnemies[random];
+                    break;
+                case EnemyVariant.Void:
+                    random = Random.Range(0, enemyDb.voidVarianceEnemies.Length);
+                    enemyData = enemyDb.voidVarianceEnemies[random];
+                    break;
+            }
+
+            // Instantiate the enemy at a random position around the player
+            Vector3 spawnPoint = GenerateRandomSpawnPoint();
+
+            GameObject enemyObj = Instantiate(enemyData.enemyPrefab, spawnPoint, Quaternion.identity);
+            EnemyController controller = enemyObj.AddComponent<EnemyController>();
+            EnemyMovement movement = enemyObj.AddComponent<EnemyMovement>();
+
+            // Initialize the enemy controller and movement with the selected data
+            controller.Initialize(enemyData);
+            movement.Initialize(enemyData.movementSpeed, enemyData.rotationSpeed);
+
+            Debug.Log($"Spawned {enemyData.name} at {spawnPoint} with variant {variance}");
         }
-
-        // Instantiate the enemy at a random position around the player
-        Vector3 spawnPoint = GenerateRandomSpawnPoint();
-
-        GameObject enemyObj = Instantiate(enemyData.enemyPrefab, spawnPoint, Quaternion.identity);
-        EnemyController controller = enemyObj.AddComponent<EnemyController>();
-        EnemyMovement movement = enemyObj.AddComponent<EnemyMovement>();
-
-        // Initialize the enemy controller and movement with the selected data
-        controller.Initialize(enemyData);
-        movement.Initialize(enemyData.movementSpeed, enemyData.rotationSpeed);
-
-        Debug.Log($"Spawned {enemyData.name} at {spawnPoint} with variant {variance}");
     }
 
     private Vector3 GenerateRandomSpawnPoint()

@@ -21,4 +21,5 @@ MonoBehaviour:
   movementSpeed: 10
   rotationSpeed: 200
   waitTime: 0
-  enemyPrefab: {fileID: 0}
+  enemyPrefab: {fileID: 958745142335686053, guid: 95aa05ec0ea0a884ab92946b57d2c7b4,
+    type: 3}
