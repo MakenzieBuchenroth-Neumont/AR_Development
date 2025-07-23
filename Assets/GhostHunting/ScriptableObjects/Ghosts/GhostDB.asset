@@ -1,0 +1,46 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4ba025ad8a105e4a922234305752e5f, type: 3}
+  m_Name: GhostDB
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyDatabase
+  baseEnemies:
+  - {fileID: 11400000, guid: 866dc8655acabb44b97b4dd5d8bb38ba, type: 2}
+  - {fileID: 11400000, guid: 43db1d06ae7622e4796f59b0d534fe54, type: 2}
+  - {fileID: 11400000, guid: ce4bfbc481c0561429e51b9d484337d2, type: 2}
+  - {fileID: 11400000, guid: 2650846ccc77aff47845705eb7a00130, type: 2}
+  - {fileID: 11400000, guid: 079a35daee145da4eaf5beb68f34e73e, type: 2}
+  - {fileID: 11400000, guid: 15595e40281f11346bf0c12736946722, type: 2}
+  - {fileID: 11400000, guid: fe41b8b5c2862e549886f7ab8ba0d492, type: 2}
+  allVarianceEnemies:
+  - {fileID: 11400000, guid: decc9dff518679848a41897c9fee9657, type: 2}
+  - {fileID: 11400000, guid: 152e5690784e28444a55a7a26c7f5cd0, type: 2}
+  - {fileID: 11400000, guid: 812ca8cc66d023645a87e5c2661d4efd, type: 2}
+  - {fileID: 11400000, guid: 349b94b87b9f81a4f85c3e1e144ea612, type: 2}
+  - {fileID: 11400000, guid: 7da70dfcce5e2dd459468a2b54d6b1e6, type: 2}
+  - {fileID: 11400000, guid: 5ae518c50e0c98a4181cab0b7ad8a467, type: 2}
+  - {fileID: 11400000, guid: 19322b3f3ff064d4790678436990f5cb, type: 2}
+  voidVarianceEnemies:
+  - {fileID: 11400000, guid: decc9dff518679848a41897c9fee9657, type: 2}
+  - {fileID: 11400000, guid: 152e5690784e28444a55a7a26c7f5cd0, type: 2}
+  - {fileID: 11400000, guid: 812ca8cc66d023645a87e5c2661d4efd, type: 2}
+  - {fileID: 11400000, guid: 349b94b87b9f81a4f85c3e1e144ea612, type: 2}
+  - {fileID: 11400000, guid: 7da70dfcce5e2dd459468a2b54d6b1e6, type: 2}
+  - {fileID: 11400000, guid: 5ae518c50e0c98a4181cab0b7ad8a467, type: 2}
+  - {fileID: 11400000, guid: 19322b3f3ff064d4790678436990f5cb, type: 2}
+  allEnemies:
+  - {fileID: 11400000, guid: 866dc8655acabb44b97b4dd5d8bb38ba, type: 2}
+  - {fileID: 11400000, guid: 43db1d06ae7622e4796f59b0d534fe54, type: 2}
+  - {fileID: 11400000, guid: ce4bfbc481c0561429e51b9d484337d2, type: 2}
+  - {fileID: 11400000, guid: 2650846ccc77aff47845705eb7a00130, type: 2}
+  - {fileID: 11400000, guid: 079a35daee145da4eaf5beb68f34e73e, type: 2}
+  - {fileID: 11400000, guid: 15595e40281f11346bf0c12736946722, type: 2}
+  - {fileID: 11400000, guid: fe41b8b5c2862e549886f7ab8ba0d492, type: 2}
