@@ -17,7 +17,7 @@ MonoBehaviour:
   variant: 1
   desc: "He\u2019s been haunting basements for centuries. Smells like wet laundry
     and regrets."
-  image: {fileID: 0}
+  image: {fileID: 21300000, guid: 7d4b72a1f256a2c409b202eea6e6f6bb, type: 3}
   patrolRadius: 20
   maxPatrolHeight: 5
   patrolCenter: {x: 0, y: 0, z: 0}

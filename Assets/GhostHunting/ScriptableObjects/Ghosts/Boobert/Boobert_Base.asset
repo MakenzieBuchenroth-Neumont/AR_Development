@@ -17,7 +17,7 @@ MonoBehaviour:
   variant: 0
   desc: "Friendly. Forgettable. Has haunted the same suburban attic since 1987. Thinks
     he\u2019s scarier than he is."
-  image: {fileID: 0}
+  image: {fileID: 21300000, guid: 62f724519402ff94fa1adf4addf37702, type: 3}
   patrolRadius: 20
   maxPatrolHeight: 5
   patrolCenter: {x: 0, y: 0, z: 0}

@@ -16,7 +16,7 @@ MonoBehaviour:
   type: 1
   variant: 0
   desc: "She thinks she\u2019s casting spells. She's really just flapping dramatically."
-  image: {fileID: 0}
+  image: {fileID: 21300000, guid: 612268f7661c1314c946b9d8781bedde, type: 3}
   patrolRadius: 20
   maxPatrolHeight: 5
   patrolCenter: {x: 0, y: 0, z: 0}

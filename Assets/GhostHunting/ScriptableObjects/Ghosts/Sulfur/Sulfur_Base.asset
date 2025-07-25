@@ -16,7 +16,7 @@ MonoBehaviour:
   type: 3
   variant: 0
   desc: Tried to join a demon cult once. Got kicked out for being too soft-spoken.
-  image: {fileID: 0}
+  image: {fileID: 21300000, guid: 49b91d454db2e2b409e3d2a5e8598e51, type: 3}
   patrolRadius: 20
   maxPatrolHeight: 5
   patrolCenter: {x: 0, y: 0, z: 0}

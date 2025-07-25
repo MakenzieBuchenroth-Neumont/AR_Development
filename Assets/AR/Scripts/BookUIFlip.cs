@@ -31,6 +31,10 @@ public class BookUIFlip : MonoBehaviour {
 	[SerializeField] GameObject caught;
 
 	[SerializeField] EnemyData[] enemyData;
+	[SerializeField] EnemyData[] voidEnemyData;
+
+	bool viewingVoid = false;
+
 	int page = 0;
 
 	void Awake() {
@@ -64,10 +68,29 @@ public class BookUIFlip : MonoBehaviour {
 
 	private void displayGhostInfo(EnemyData data) {
 		ghostName.GetComponentInChildren<TMP_Text>().text = data.name;
-		//image.GetComponentInChildren<Image>().sprite = data.sprite;
+		image.GetComponentInChildren<Image>().sprite = data.image;
 		desc.GetComponentInChildren<TMP_Text>().text = data.desc;
 		//encountered.GetComponentInChildren<TMP_Text>().text = PlayerPrefs.Load(data.encountered);
 		//caught.GetComponentInChildren<TMP_Text>().text = PlayerPrefs.Load(data.caught);
+	}
+
+	public void toggleVoid() {
+		if (voidEnemyData == null || page >= voidEnemyData.Length || voidEnemyData[page] == null) {
+			Debug.LogWarning($"Void version missing for page {page}");
+			return;
+		}
+		viewingVoid = true;
+		displayGhostInfo(voidEnemyData[page]);
+	}
+
+	public void toggleNormal() {
+		if (enemyData == null || page >= enemyData.Length || enemyData[page] == null) {
+			Debug.LogWarning($"Normal version missing for page {page}");
+			return;
+		}
+
+		viewingVoid = false;
+		displayGhostInfo(enemyData[page]);
 	}
 
 	private IEnumerator PlayFrames(Sprite[] frames, bool reverse) {
@@ -106,7 +129,12 @@ public class BookUIFlip : MonoBehaviour {
 				page--;
 			}
 		}
-		displayGhostInfo(enemyData[page]);
+		if (viewingVoid) {
+			displayGhostInfo(voidEnemyData[page]);
+		}
+		else {
+			displayGhostInfo(enemyData[page]);
+		}
 	}
 
 	public void openBook() {

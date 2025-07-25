@@ -17,7 +17,7 @@ MonoBehaviour:
   variant: 0
   desc: "A self-declared \u201Cfashion icon of the afterlife.\u201D Owns 37 identical
     stained hats."
-  image: {fileID: 0}
+  image: {fileID: 21300000, guid: 9e68393b935ef2d47b13e18d08367116, type: 3}
   patrolRadius: 20
   maxPatrolHeight: 5
   patrolCenter: {x: 0, y: 0, z: 0}

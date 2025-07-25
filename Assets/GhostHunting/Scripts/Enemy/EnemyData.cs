@@ -11,7 +11,7 @@ public class EnemyData : ScriptableObject
     public EnemyType type;
     public EnemyVariant variant;
     public string desc;
-    public Image image;
+    public Sprite image;
 
     // Movement Settings
     [SerializeField]
