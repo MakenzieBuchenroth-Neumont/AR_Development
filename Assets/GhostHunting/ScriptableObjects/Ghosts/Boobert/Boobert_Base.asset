@@ -15,14 +15,15 @@ MonoBehaviour:
   name: Boobert Flanegan
   type: 0
   variant: 0
+
   desc: "Friendly. Forgettable. Has haunted the same suburban attic since 1987. Thinks
     he\u2019s scarier than he is."
   image: {fileID: 21300000, guid: 62f724519402ff94fa1adf4addf37702, type: 3}
-  patrolRadius: 20
-  maxPatrolHeight: 5
-  patrolCenter: {x: 0, y: 0, z: 0}
-  movementSpeed: 10
+  ensnaredValue: 5
+  fleeDistance: 50
+  patrolRadius: 10
+  movementSpeed: 1
   rotationSpeed: 200
-  waitTime: 0
+  waitTime: 2
   enemyPrefab: {fileID: 498253721416304272, guid: f6ab88624626d1249bd73bcb4a1c7d59,
     type: 3}

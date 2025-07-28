@@ -17,11 +17,11 @@ MonoBehaviour:
   variant: 1
   desc: Tried to join a demon cult once. Got kicked out for being too soft-spoken.
   image: {fileID: 21300000, guid: 8641db4b2e2b0354e9ec02a44241e80b, type: 3}
-  patrolRadius: 20
-  maxPatrolHeight: 5
-  patrolCenter: {x: 0, y: 0, z: 0}
-  movementSpeed: 10
+  ensnaredValue: 5
+  fleeDistance: 50
+  patrolRadius: 10
+  movementSpeed: 1
   rotationSpeed: 200
-  waitTime: 0
+  waitTime: 2
   enemyPrefab: {fileID: 2625144703600617777, guid: 1ce65fcf3e1c39047a0ecec3f464f469,
     type: 3}

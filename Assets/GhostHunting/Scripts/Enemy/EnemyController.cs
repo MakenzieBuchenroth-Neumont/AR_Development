@@ -3,8 +3,14 @@ using UnityEngine;
 public class EnemyController : MonoBehaviour
 {
     public EnemyData enemyData;
-    private EnemyState currentState;
+    public EnemyState currentState;
     public EnemyMovement movement;
+
+    public int id = -1;
+    public bool isCaptured = false;
+    public bool isEnsnared = false;
+
+    public float ensnareProgress = 0;
 
     public void Initialize(EnemyData data)
     {
@@ -35,4 +41,27 @@ public class EnemyController : MonoBehaviour
         currentState = newState;
         currentState.OnEnter();
     }
+
+    #region Ensare Management
+    public void BeginEnsare()
+    {
+        if (ensnareProgress < enemyData.ensnaredValue)
+        {
+            ChangeState(new EnsnaringState(this));
+            //AttemptEnsnare(0.1f);
+        }
+        else
+        {
+            // The ghost is already ensnared, handle logic and move to ensnared state
+        }
+    }
+
+    public void AttemptEnsnare(float progressValue)
+    {
+        if (!isEnsnared && !isCaptured)
+        {
+            ensnareProgress += progressValue;
+        }
+    }
+    #endregion
 }
