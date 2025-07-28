@@ -2,8 +2,6 @@ using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.InputSystem;
 
-
-
 public class SwipeTracker : MonoBehaviour
 {
     [Header("Swipe Detection Settings")]
@@ -28,11 +26,19 @@ public class SwipeTracker : MonoBehaviour
     private bool centroidInitialized = false;
     private bool justInitializedAngle = false;
 
+    [Header("Trap Settings")]
+    [SerializeField] private GameObject trapPrefab;
+    [SerializeField] private float trapThrowForce = 10f;
+    [SerializeField] private Transform trapSpawnPoint;
+    private bool trapSelected = false;
+    public bool canThrowTrap = false;
+
     // Line Rendering
     [Header("Line Rendering Settings")]
     [SerializeField] private LineRenderer lineRenderer;
-    [SerializeField] private Camera mainCamera;
+    [SerializeField] private Transform arOrigin;
     [SerializeField] private float trailDuration = 0.3f;
+    private Camera arCamera;
     private List<Vector2> swipePath = new();
     private List<TrailPoint> trailPoints = new();
     private struct TrailPoint
@@ -41,11 +47,12 @@ public class SwipeTracker : MonoBehaviour
         public float timestamp;
     }
 
-    // State Variables
-    private EnemyManager enemyManager;
-    private bool canEnsnare = false;
-    private bool canThrowTrap = false;
-
+    // State/Ghost Variables
+    //private EnemyManager enemyManager;
+    [Header("Ghost Interaction Settings")]
+    public bool canEnsnare { get; set; } =  false;
+    public GameObject ghostToCapture;
+    
     void Awake()
     {
         // Initialize enemy manager reference
@@ -55,7 +62,8 @@ public class SwipeTracker : MonoBehaviour
         {
             return;
         }
-        mainCamera = Camera.main;
+        //mainCamera = Camera.main;
+        arCamera = arOrigin.GetComponentInChildren<Camera>();
         lineRenderer.positionCount = 0;
         lineRenderer.useWorldSpace = true;
         lineRenderer.startWidth = 0.002f;
@@ -160,7 +168,17 @@ public class SwipeTracker : MonoBehaviour
     #region Gesture Analysis
     private void AnalyzeGesture()
     {
-        // Use this for other gesture types like throwing a trap
+        if (!trapSelected || !canThrowTrap || swipePath.Count < 2) return;
+
+        Vector2 start = swipePath[0];
+        Vector2 end = swipePath[^1];
+        Vector2 direction = (end - start).normalized;
+
+        if (Vector2.Dot(direction, Vector2.up) > 0.8f)
+        {
+            ThrowTrap();
+            trapSelected = false;
+        }
     }
 
     /// <summary>
@@ -295,7 +313,9 @@ public class SwipeTracker : MonoBehaviour
         screenCenter /= swipePath.Count;
 
         // Convert to world direction
-        Ray centerRay = mainCamera.ScreenPointToRay(screenCenter);
+        //Ray centerRay = mainCamera.ScreenPointToRay(screenCenter);
+        Ray centerRay = arCamera.ScreenPointToRay(screenCenter);
+        
         Vector3 worldCenter = centerRay.origin + centerRay.direction * 5f; // pushed slightly forward
         Debug.DrawRay(centerRay.origin, centerRay.direction * detectionRadius, Color.green, 2f);
 
@@ -314,7 +334,7 @@ public class SwipeTracker : MonoBehaviour
         Vector3 baseDirection = centerRay.direction.normalized;
 
         // Cast rays in an arc around the base direction
-        Transform camTransform = mainCamera.transform;
+        Transform camTransform = arCamera.transform;
         Vector3 right = camTransform.right;
 
         for (int i = 0; i < numberOfRays; i++)
@@ -384,7 +404,6 @@ public class SwipeTracker : MonoBehaviour
 
         return sum / trailPoints.Count;
     }
-
     private void HandleEnsare(GameObject ghost)
     {
         if (ghost.TryGetComponent(out EnemyController controller))
@@ -403,12 +422,53 @@ public class SwipeTracker : MonoBehaviour
             }
         }
     }
+    private void ThrowTrap()
+    {
+        if (trapPrefab == null || arCamera == null || ghostToCapture == null) return;
+
+        Vector3 spawnPosition = trapSpawnPoint.position != null
+            ? trapSpawnPoint.position
+            : arCamera.transform.position + arCamera.transform.forward * 0.5f;
+
+        GameObject trap = Instantiate(trapPrefab, spawnPosition, Quaternion.identity);
+
+        if (trap.TryGetComponent<Rigidbody>(out Rigidbody rb))
+        {
+            Vector3 ghostPosition = ghostToCapture.transform.position;
+            Vector3 target = new Vector3(ghostPosition.x, 0.01f, ghostPosition.z);
+
+            // Distance and Direction to target
+            Vector3 toTarget = target - spawnPosition;
+            float distance = toTarget.magnitude;
+
+            // Get players look angle
+            float lookAngle = Vector3.Angle(arCamera.transform.forward, Vector3.ProjectOnPlane(toTarget, Vector3.up).normalized);
+
+            // Customize arc height based on look angle
+            float arcHeight = Mathf.Lerp(1.0f, 4.0f, lookAngle / 90f);
+
+            // Calculate upward offset to simulate arc
+            Vector3 upwardArc = Vector3.up * arcHeight;
+
+            // Final throw direction
+            Vector3 throwDirection = (toTarget.normalized + upwardArc).normalized;
+
+            // Apply force
+            rb.AddForce(throwDirection * trapThrowForce, ForceMode.VelocityChange);
+        }
+    }
+    public void SelectTrap()
+    {
+        trapSelected = true;
+        canThrowTrap = true;
+        Debug.Log("Trap selected. Swipe up to throw.");
+    }
     #endregion
 
     #region Rendering
     private void UpdateLine(Vector2 screenPos)
     {
-        Vector3 worldPos = mainCamera.ScreenToWorldPoint(new Vector3(screenPos.x, screenPos.y, 0.5f));
+        Vector3 worldPos = arCamera.ScreenToWorldPoint(new Vector3(screenPos.x, screenPos.y, 0.5f));
 
         if (trailPoints.Count == 0 || Vector3.Distance(worldPos, trailPoints[^1].position) > 0.01f)
         {

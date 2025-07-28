@@ -10,6 +10,7 @@ Library: C:\Neumont\Year Three\QuarterFour\PRO385-Game Engine Projects\AR_Develo
 --target-framework=NetFramework
 --generate-link-xml=Temp\burst.link.xml
 --temp-folder=C:\Neumont\Year Three\QuarterFour\PRO385-Game Engine Projects\AR_Development\Temp\Burst
+--debug=LineOnly
 --key-folder=C:/Program Files/Unity/Hub/Editor/6000.2.0b9/Editor/Data/PlaybackEngines/AndroidPlayer
 --decode-folder=C:\Neumont\Year Three\QuarterFour\PRO385-Game Engine Projects\AR_Development\Library\Burst
 --output=C:\Neumont\Year Three\QuarterFour\PRO385-Game Engine Projects\AR_Development\Temp\BurstOutput\tempburstlibs\arm64-v8a\lib_burst_generated
@@ -83,6 +84,7 @@ Library: C:\Neumont\Year Three\QuarterFour\PRO385-Game Engine Projects\AR_Develo
 --float-mode=Fast
 --generate-link-xml=Temp\burst.link.xml
 --temp-folder=C:\Neumont\Year Three\QuarterFour\PRO385-Game Engine Projects\AR_Development\Temp\Burst
+--debug=LineOnly
 --key-folder=C:/Program Files/Unity/Hub/Editor/6000.2.0b9/Editor/Data/PlaybackEngines/AndroidPlayer
 --decode-folder=C:\Neumont\Year Three\QuarterFour\PRO385-Game Engine Projects\AR_Development\Library\Burst
 --output=C:\Neumont\Year Three\QuarterFour\PRO385-Game Engine Projects\AR_Development\Temp\BurstOutput\tempburstlibs\arm64-v8a\lib_burst_generated
@@ -101,6 +103,7 @@ Library: C:\Neumont\Year Three\QuarterFour\PRO385-Game Engine Projects\AR_Develo
 --target-framework=NetFramework
 --generate-link-xml=Temp\burst.link.xml
 --temp-folder=C:\Neumont\Year Three\QuarterFour\PRO385-Game Engine Projects\AR_Development\Temp\Burst
+--debug=LineOnly
 --key-folder=C:/Program Files/Unity/Hub/Editor/6000.2.0b9/Editor/Data/PlaybackEngines/AndroidPlayer
 --decode-folder=C:\Neumont\Year Three\QuarterFour\PRO385-Game Engine Projects\AR_Development\Library\Burst
 --output=C:\Neumont\Year Three\QuarterFour\PRO385-Game Engine Projects\AR_Development\Temp\BurstOutput\tempburstlibs\arm64-v8a\lib_burst_generated

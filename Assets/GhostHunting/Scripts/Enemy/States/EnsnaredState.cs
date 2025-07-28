@@ -5,10 +5,10 @@ public class EnsnaredState : EnemyState
     private EnemyController _controller;
     private Transform _playerTransform;
 
-
     public EnsnaredState(EnemyController controller) : base(controller)
     {
         this._controller = controller;
+
         GameObject player = GameObject.FindGameObjectWithTag("Player");
         if (player != null)
         {

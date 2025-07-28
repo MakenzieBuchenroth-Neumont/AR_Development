@@ -42,7 +42,7 @@ public class EnemyController : MonoBehaviour
         currentState.OnEnter();
     }
 
-    #region Ensare Management
+    #region Ensare & Capture Management
     public void BeginEnsare()
     {
         if (ensnareProgress < enemyData.ensnaredValue)
@@ -55,13 +55,17 @@ public class EnemyController : MonoBehaviour
             // The ghost is already ensnared, handle logic and move to ensnared state
         }
     }
-
     public void AttemptEnsnare(float progressValue)
     {
         if (!isEnsnared && !isCaptured)
         {
             ensnareProgress += progressValue;
         }
+    }
+
+    public void AttemptCapture()
+    {
+
     }
     #endregion
 }

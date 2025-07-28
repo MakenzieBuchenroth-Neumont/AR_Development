@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 using System.Collections.Generic;
 
 // Will be assigned later
@@ -22,20 +23,23 @@ public enum EnemyVariant
 public class EnemyManager : MonoBehaviour
 {
     [Header("Enemy Settings")]
-    [SerializeField]
-    public EnemyDatabase enemyDb;
-    public int minGhosts = 3;
-    public int maxGhosts = 10;
-    private List<EnemyData> enemyList;
-    private List<GameObject> spawnedEnemies;
-    public GameObject spawnedEnemy;
+    [SerializeField] private EnemyDatabase enemyDb;
+    [SerializeField] private int minGhosts = 3;
+    [SerializeField] private int maxGhosts = 10;
+    [SerializeField] private List<EnemyData> enemyList;
+    private GameObject spawnedEnemy;
 
     [Header("Spawn Settings")]
-    public float resetTimeMinutes = 2;
-    public float spawnRadius = 100f;
+    [SerializeField] private float resetTimeMinutes = 2;
+    [SerializeField] private float spawnRadius = 100f;
     private float timeRemaining = 0f;
     private bool timerRunning = false;
+    public bool canScan = true;
     private Transform playerTransform;
+
+    [Header("UI Settings")]
+    [SerializeField] private SwipeTracker swipeTracker;
+    [SerializeField] private Button scanButton;
 
     // Only for testing
     public void Start()
@@ -58,7 +62,7 @@ public class EnemyManager : MonoBehaviour
 
         GenerateEnemyList(Random.Range(minGhosts, maxGhosts + 1));
         ResetTimer();
-        SpawnEnemy();
+        canScan = true;
     }
     public void Update()
     {
@@ -66,20 +70,21 @@ public class EnemyManager : MonoBehaviour
         {
             if (timeRemaining > 0f)
             {
-                // Debugging only: spawn enemy every 15 seconds
-                //if (Mathf.Abs(timeRemaining % 15f) < 0.01f && Mathf.Abs(timeRemaining - 60f) > 0.01f)
-                //{
-                //    SpawnEnemy();
-                //}
                 timeRemaining -= Time.deltaTime;
             }
             else
             {
                 timerRunning = false;
-                RemoveAllEnemies(); // Remove all enemies from the scene whent the timer runs out
+                // RemoveEnemies(); // Remove all enemies from the scene whent the timer runs out
                 GenerateEnemyList(Random.Range(minGhosts, maxGhosts + 1));
                 ResetTimer();
             }
+        }
+
+        if (spawnedEnemy != null)
+        {
+            CheckIfEnsnared();
+            CheckIfCaptured();
         }
     }
 
@@ -89,7 +94,7 @@ public class EnemyManager : MonoBehaviour
     /// Gives the enemy a unique ID based on the current count of the spawned enemies
     /// Adds the enemy to the spawned enemies list for tracking and management
     /// </summary>
-    public void SpawnEnemy()
+    private void SpawnEnemy()
     {
         if (spawnedEnemy != null) return; // Only one enemy should be spawned at a time
         // Check if there are any enemies to spawn
@@ -114,16 +119,9 @@ public class EnemyManager : MonoBehaviour
         controller.Initialize(enemyData);
         movement.Initialize(enemyData.movementSpeed, enemyData.rotationSpeed);
 
-        // Give the enemy a unique ID
-        controller.id = spawnedEnemies != null ? spawnedEnemies.Count : 0; // Unique ID based on current count
-
-        // Add the enemy to the spawned enemies list
-        //if (spawnedEnemies == null)
-        //{
-        //    spawnedEnemies = new List<GameObject>();
-        //}
-        //spawnedEnemies.Add(enemyObj);
         spawnedEnemy = enemyObj;
+        if (spawnedEnemy) canScan = false;
+        ToggleButton(scanButton, false);
     }
 
     #region Enemy Helpers
@@ -183,20 +181,21 @@ public class EnemyManager : MonoBehaviour
     /// <returns>Returns the game object found with the identifier or null</returns>
     private GameObject GetSpawnedEnemyById(int id)
     {
-        GameObject spawnedEnemy = null;
-        if (spawnedEnemies != null)
-        {
-            foreach (GameObject enemy in spawnedEnemies)
-            {
-                EnemyController controller = enemy.GetComponent<EnemyController>();
-                if (controller != null && controller.id == id)
-                {
-                    spawnedEnemy = enemy;
-                    break;
-                }
-            }
-        }
-        return spawnedEnemy;
+        //GameObject spawnedEnemy = null;
+        //if (spawnedEnemies != null)
+        //{
+        //    foreach (GameObject enemy in spawnedEnemies)
+        //    {
+        //        EnemyController controller = enemy.GetComponent<EnemyController>();
+        //        if (controller != null && controller.id == id)
+        //        {
+        //            spawnedEnemy = enemy;
+        //            break;
+        //        }
+        //    }
+        //}
+        //return spawnedEnemy;
+        return null;
     }
 
     /// <summary>
@@ -206,42 +205,65 @@ public class EnemyManager : MonoBehaviour
     /// <returns></returns>
     private GameObject RemoveSpawnedEnemyById(int id)
     {
-        GameObject enemyToRemove = GetSpawnedEnemyById(id);
-        if (enemyToRemove != null)
-        {
-            spawnedEnemies.Remove(enemyToRemove);
-            Destroy(enemyToRemove);
-            return enemyToRemove;
-        }
-        else
-        {
-            Debug.LogWarning("No enemy found with ID: " + id);
-            return null;
-        }
+        //GameObject enemyToRemove = GetSpawnedEnemyById(id);
+        //if (enemyToRemove != null)
+        //{
+        //    spawnedEnemies.Remove(enemyToRemove);
+        //    Destroy(enemyToRemove);
+        //    return enemyToRemove;
+        //}
+        //else
+        //{
+        //    Debug.LogWarning("No enemy found with ID: " + id);
+        //    return null;
+        //}
+        return null;
     }
 
     /// <summary>
     /// Removes all spawned enemies from the scene and clears the spawnedEnemies list.
     /// </summary>
-    private void RemoveAllEnemies()
+    private void RemoveEnemies()
     {
-        if (spawnedEnemies != null)
-        {
-            foreach (GameObject enemy in spawnedEnemies)
-            {
-                if (enemy != null)
-                {
-                    Destroy(enemy);
-                }
-            }
-            spawnedEnemies.Clear();
-        }
-        else
-        {
-            Debug.LogWarning("No enemies to remove.");
-        }
+        // If there is an enemy currently spawned, don't remove the enemy
+        //if (spawnedEnemy == null)
+        //{
+
+        //}
+
+        //if (spawnedEnemies != null)
+        //{
+        //    foreach (GameObject enemy in spawnedEnemies)
+        //    {
+        //        if (enemy != null)
+        //        {
+        //            Destroy(enemy);
+        //        }
+        //    }
+        //    spawnedEnemies.Clear();
+        //}
+        //else
+        //{
+        //    Debug.LogWarning("No enemies to remove.");
+        //}
     }
     #endregion
+
+    #region Spawn & Capture Management
+    public void AttemptScan()
+    {
+        if (enemyList == null || enemyList.Count == 0)
+        {
+            // No enemies available to spawn
+            Debug.LogWarning($"No enemies available to spawn. Try again in {timeRemaining * 60f} minutes");
+            // Handle more logic later (e.g., UI message and handling)
+        }
+
+        if (canScan && spawnedEnemy == null)
+        {
+            SpawnEnemy();
+        }
+    }
     private Vector3 GenerateRandomSpawnPoint()
     {
         Vector3 randomPoint = Random.insideUnitSphere * spawnRadius;
@@ -254,4 +276,47 @@ public class EnemyManager : MonoBehaviour
         timeRemaining = resetTimeMinutes * 60f;
         timerRunning = true;
     }
+    public void EnemyCaptured()
+    {
+        if (spawnedEnemy == null)
+        {
+            canScan = true;
+            ToggleButton(scanButton, true);
+        }
+        else
+        {
+            spawnedEnemy = null;
+            canScan = true;
+            ToggleButton(scanButton, true);
+        }
+    }
+
+    #endregion
+
+    #region UI Management
+    private void ToggleButton(Button button, bool enable)
+    {
+        if (button != null)
+        {
+            button.interactable = enable;
+        }
+    }
+    private void CheckIfEnsnared()
+    {
+        EnemyController controller = spawnedEnemy.GetComponent<EnemyController>();
+        if (controller != null && controller.isEnsnared)
+        {
+            swipeTracker.canEnsnare = false;
+            swipeTracker.ghostToCapture = spawnedEnemy;
+        }
+    }
+    private void CheckIfCaptured()
+    {
+        EnemyController controller = spawnedEnemy.GetComponent<EnemyController>();
+        if (controller != null && controller.isCaptured)
+        {
+            // Handle later
+        }
+    }
+    #endregion
 }
