@@ -564,10 +564,12 @@ MonoBehaviour:
   maxSwipeDuration: 2
   circleThreshold: 0.9
   rotationThreshold: 300
+  numberOfRays: 15
+  maxRaycastDistance: 20
+  detectionRadius: 10
   lineRenderer: {fileID: 19148213}
   mainCamera: {fileID: 2512387468973847745}
   trailDuration: 0.3
-  detectionRadius: 10
 --- !u!1001 &1134642359
 PrefabInstance:
   m_ObjectHideFlags: 0
