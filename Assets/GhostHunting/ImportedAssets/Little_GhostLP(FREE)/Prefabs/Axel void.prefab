@@ -58,10 +58,15 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2676405798547930094, guid: 4b5b08dfd84e3c342b10a4e2ed977d48,
+        type: 3}
+      propertyPath: m_IsTrigger
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2676405798547930095, guid: 4b5b08dfd84e3c342b10a4e2ed977d48,
         type: 3}
       propertyPath: m_Name
-      value: Axel void Variant
+      value: Axel void
       objectReference: {fileID: 0}
     - target: {fileID: 2676405798684617452, guid: 4b5b08dfd84e3c342b10a4e2ed977d48,
         type: 3}

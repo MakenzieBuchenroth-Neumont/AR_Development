@@ -15,11 +15,11 @@ MonoBehaviour:
   name: Mustardo The Malignant
   type: 4
   variant: 0
-  patrolRadius: 20
-  maxPatrolHeight: 5
-  patrolCenter: {x: 0, y: 0, z: 0}
-  movementSpeed: 10
+  ensnaredValue: 5
+  fleeDistance: 50
+  patrolRadius: 10
+  movementSpeed: 1
   rotationSpeed: 200
-  waitTime: 0
+  waitTime: 2
   enemyPrefab: {fileID: 958745142335686053, guid: 95aa05ec0ea0a884ab92946b57d2c7b4,
     type: 3}

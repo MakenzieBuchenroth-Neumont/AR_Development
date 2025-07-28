@@ -15,11 +15,11 @@ MonoBehaviour:
   name: Wanda Wontwash
   type: 5
   variant: 0
-  patrolRadius: 20
-  maxPatrolHeight: 5
-  patrolCenter: {x: 0, y: 0, z: 0}
-  movementSpeed: 10
+  ensnaredValue: 5
+  fleeDistance: 50
+  patrolRadius: 10
+  movementSpeed: 1
   rotationSpeed: 200
-  waitTime: 0
+  waitTime: 2
   enemyPrefab: {fileID: 2602231374797837610, guid: 855c90c429434444fbe3ca2b5507ab04,
     type: 3}

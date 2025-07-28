@@ -15,11 +15,11 @@ MonoBehaviour:
   name: Mildew Merv
   type: 2
   variant: 1
-  patrolRadius: 20
-  maxPatrolHeight: 5
-  patrolCenter: {x: 0, y: 0, z: 0}
-  movementSpeed: 10
+  ensnaredValue: 5
+  fleeDistance: 50
+  patrolRadius: 10
+  movementSpeed: 1
   rotationSpeed: 200
-  waitTime: 0
+  waitTime: 2
   enemyPrefab: {fileID: 6594688372806583970, guid: 2b5cf187c9d25874f9ebea8ddf8343c8,
     type: 3}

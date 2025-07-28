@@ -15,11 +15,11 @@ MonoBehaviour:
   name: Witch McSheetface
   type: 1
   variant: 0
-  patrolRadius: 20
-  maxPatrolHeight: 5
-  patrolCenter: {x: 0, y: 0, z: 0}
-  movementSpeed: 10
+  ensnaredValue: 5
+  fleeDistance: 50
+  patrolRadius: 10
+  movementSpeed: 1
   rotationSpeed: 200
-  waitTime: 0
+  waitTime: 2
   enemyPrefab: {fileID: 5446477390807014373, guid: b713585f24f940f4eadb10319818ef40,
     type: 3}
