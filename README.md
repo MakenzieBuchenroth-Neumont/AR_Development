@@ -22,22 +22,18 @@ An Augmented Reality (AR) mobile app where users must search their environment t
 - **Unity 2022.x**
 - **C#**
 - **Android Studio** (for Android builds)
-- **Xcode** (for iOS builds)
 - **Git** and **GitHub** for version control
 
 ## 🛠️ Instructions to Run the Project
 
 ### Prerequisites
-- Android mobile device
 - Unity Hub with Unity version **6000.2.0b9** installed
-- Android or iOS device with AR support
+- Android device with AR support
 - ARCore/ARKit compatible build environment:
   - **Android**: Android SDK, JDK, and NDK (via Android Studio or Unity Hub)
-  - **iOS**: macOS with Xcode and Apple developer account
 
 ### Setup
 
 1. **Clone the Repository**
 2. **Open in Unity**
 --Add instructions to run on tablet
-4. **Build to 
