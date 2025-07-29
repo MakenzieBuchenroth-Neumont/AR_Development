@@ -137,6 +137,7 @@ public class EnemyManager : MonoBehaviour
             return;
         }
 
+        UiManager.Singleton.TurnOff(UiManager.UIItems.Hotbar);
         // Get EnemyData From List
         EnemyData enemyData = enemyList[Random.Range(0, enemyList.Count)];
         enemyList.Remove(enemyData); // Remove the enemy from the list to prevent respawning the same one
@@ -345,7 +346,9 @@ public class EnemyManager : MonoBehaviour
             spawnedEnemy = null;
             canScan = true;
             ToggleButton(scanButton, true);
-        }
+			UiManager.Singleton.TurnOff(UiManager.UIItems.TrapSelection);
+			UiManager.Singleton.TurnOn(UiManager.UIItems.Hotbar);
+		}
 
         if (SwipeTracker.IsInitialized)
         {
@@ -361,8 +364,9 @@ public class EnemyManager : MonoBehaviour
         if (button != null)
         {
             button.interactable = enable;
-        }
-    }
+			UiManager.Singleton.TurnOff(UiManager.UIItems.Hotbar);
+		}
+	}
     private void CheckIfEnsnared()
     {
         EnemyController controller = spawnedEnemy.GetComponent<EnemyController>();
@@ -370,8 +374,10 @@ public class EnemyManager : MonoBehaviour
         {
             swipeTracker.canEnsnare = false;
             swipeTracker.ghostToCapture = spawnedEnemy;
-        }
-    }
+			UiManager.Singleton.TurnOn(UiManager.UIItems.TrapSelection);
+		}
+
+	}
     private void CheckIfCaptured()
     {
         EnemyController controller = spawnedEnemy.GetComponent<EnemyController>();
@@ -379,6 +385,7 @@ public class EnemyManager : MonoBehaviour
         {
             // Handle later
         }
+
     }
     #endregion
 }

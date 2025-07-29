@@ -4396,6 +4396,7 @@ GameObject:
   m_Component:
   - component: {fileID: 417679167}
   - component: {fileID: 417679166}
+  - component: {fileID: 417679168}
   m_Layer: 0
   m_Name: UIButton
   m_TagString: Untagged
@@ -4447,6 +4448,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &417679168
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 417679165}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8f7bfc14962341b42b6a18a629bce64e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UiManager
+  HotbarUI: {fileID: 345192589}
+  TrapSelectionUI: {fileID: 2026881771}
 --- !u!1 &422323227
 GameObject:
   m_ObjectHideFlags: 0
@@ -9706,7 +9721,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
   m_AnchoredPosition: {x: 0, y: 10}
-  m_SizeDelta: {x: 100, y: 25}
+  m_SizeDelta: {x: 70, y: 25}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &1013250171
 MonoBehaviour:
@@ -9755,7 +9770,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 14.7
+  m_fontSize: 12
   m_fontSizeBase: 14.1
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -10805,7 +10820,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
   m_AnchoredPosition: {x: 0, y: 10}
-  m_SizeDelta: {x: 100, y: 25}
+  m_SizeDelta: {x: 70, y: 25}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &1059457547
 MonoBehaviour:
@@ -10854,7 +10869,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 14.7
+  m_fontSize: 12
   m_fontSizeBase: 14.1
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -12415,7 +12430,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
   m_AnchoredPosition: {x: 0, y: 10}
-  m_SizeDelta: {x: 100, y: 25}
+  m_SizeDelta: {x: 70, y: 25}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &1226528339
 MonoBehaviour:
@@ -12464,7 +12479,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 14.7
+  m_fontSize: 12
   m_fontSizeBase: 14.1
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -20684,7 +20699,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
   m_AnchoredPosition: {x: 0, y: 10}
-  m_SizeDelta: {x: 100, y: 25}
+  m_SizeDelta: {x: 70, y: 25}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &2005997188
 MonoBehaviour:
@@ -20802,7 +20817,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2026881772
 RectTransform:
   m_ObjectHideFlags: 0
