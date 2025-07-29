@@ -431,6 +431,15 @@ public class SwipeTracker : MonoBehaviour
             : arCamera.transform.position + arCamera.transform.forward * 0.5f;
 
         GameObject trap = Instantiate(trapPrefab, spawnPosition, Quaternion.identity);
+        if (trap.TryGetComponent<GhostTrap>(out GhostTrap ghostTrap))
+        {
+            ghostTrap.ThrowTrap(spawnPosition, ghostToCapture, arCamera);
+        }
+        else
+        {
+            Debug.LogError("GhostTrap component is missing on the trap prefab.");
+            return;
+        }
 
         if (trap.TryGetComponent<Rigidbody>(out Rigidbody rb))
         {
