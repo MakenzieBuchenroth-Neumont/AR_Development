@@ -34,6 +34,11 @@ public class GhostTrap : MonoBehaviour
                 // When the ground is hit, change the state to Activated
                 if (CheckForGround())
                 {
+                    if (gameObject.TryGetComponent<Rigidbody>(out Rigidbody rb))
+                    {
+                        //rb.isKinematic = true; // Stop the trap from moving
+                        rb.constraints |= RigidbodyConstraints.FreezePosition; // Freeze all movement
+                    }
                     ActivateTrap();
                 }
                 break;
@@ -92,7 +97,7 @@ public class GhostTrap : MonoBehaviour
         if (EnemyManager.IsInitialized)
         {
             Vector3 ghostPos = EnemyManager.Instance.spawnedEnemy.transform.position;
-            if (gameObject.transform.position.y <= ghostPos.y - 5.0f)
+            if (gameObject.transform.position.y <= ghostPos.y - 1.25f)
             {
                 return true;
             }

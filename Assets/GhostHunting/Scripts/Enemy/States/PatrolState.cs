@@ -27,35 +27,35 @@ public class PatrolState : EnemyState
     {
         _controller.ensnareProgress = 0f; // Reset ensnare progress when entering patrol state
         _controller.isEnsnared = false;
-        targetPosition = GetRandomPoint();
+        //targetPosition = GetRandomPoint();
     }
     public override void OnExit() { }
     public override void UpdateState()
     {
-        if (targetPosition != null)
-        {
-            if (isWaiting)
-            {
-                waitTimer -= Time.deltaTime;
+        //if (targetPosition != null)
+        //{
+        //    if (isWaiting)
+        //    {
+        //        waitTimer -= Time.deltaTime;
 
-                if (waitTimer <= 0f)
-                {
-                    // Done waiting — get new point and resume movement
-                    targetPosition = GetRandomPoint();
-                    isWaiting = false;
-                }
-                return; // Skip movement while waiting
-            }
+        //        if (waitTimer <= 0f)
+        //        {
+        //            // Done waiting — get new point and resume movement
+        //            targetPosition = GetRandomPoint();
+        //            isWaiting = false;
+        //        }
+        //        return; // Skip movement while waiting
+        //    }
 
-            controller.movement.MoveTo(targetPosition);
+        //    controller.movement.MoveTo(targetPosition);
 
-            if (Vector3.Distance(controller.transform.position, targetPosition) < 0.5f)
-            {
-                // Reached target, start waiting
-                isWaiting = true;
-                waitTimer = enemyData.waitTime;
-            }
-        }
+        //    if (Vector3.Distance(controller.transform.position, targetPosition) < 0.5f)
+        //    {
+        //        // Reached target, start waiting
+        //        isWaiting = true;
+        //        waitTimer = enemyData.waitTime;
+        //    }
+        //}
     }
 
     /// <summary>
