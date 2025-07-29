@@ -18,11 +18,11 @@ MonoBehaviour:
   desc: "A self-declared \u201Cfashion icon of the afterlife.\u201D Owns 37 identical
     stained hats."
   image: {fileID: 21300000, guid: 7043a175eb7878143865acb250e0820f, type: 3}
-  patrolRadius: 20
-  maxPatrolHeight: 5
-  patrolCenter: {x: 0, y: 0, z: 0}
-  movementSpeed: 10
+  ensnaredValue: 5
+  fleeDistance: 50
+  patrolRadius: 2
+  movementSpeed: 1
   rotationSpeed: 200
-  waitTime: 0
+  waitTime: 2
   enemyPrefab: {fileID: 304459595495657700, guid: 5a3ea1a34f310c44994f4879067d5d54,
     type: 3}

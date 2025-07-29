@@ -36,4 +36,8 @@ An Augmented Reality (AR) mobile app where users must search their environment t
 
 1. **Clone the Repository**
 2. **Open in Unity**
---Add instructions to run on tablet
+3. **Plug in device and find device in build setting**
+4. **Build to device**
+
+
+<img width="246" height="415" alt="screenshot" src="https://github.com/user-attachments/assets/25c7764f-f985-440b-9d2b-07d343e12616" />

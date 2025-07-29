@@ -18,11 +18,11 @@ MonoBehaviour:
   desc: "Friendly. Forgettable. Has haunted the same suburban attic since 1987. Thinks
     he\u2019s scarier than he is."
   image: {fileID: 21300000, guid: 7d05bdcc7aa0b4a439ea1c1946e573f9, type: 3}
-  patrolRadius: 20
-  maxPatrolHeight: 5
-  patrolCenter: {x: 0, y: 0, z: 0}
-  movementSpeed: 10
+  ensnaredValue: 5
+  fleeDistance: 50
+  patrolRadius: 2
+  movementSpeed: 1
   rotationSpeed: 200
-  waitTime: 0
+  waitTime: 2
   enemyPrefab: {fileID: 498253721416304272, guid: 6770a30670134ac48850d9217364a62e,
     type: 3}
