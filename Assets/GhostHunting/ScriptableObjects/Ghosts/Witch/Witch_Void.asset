@@ -17,11 +17,11 @@ MonoBehaviour:
   variant: 1
   desc: "She thinks she\u2019s casting spells. She's really just flapping dramatically."
   image: {fileID: 21300000, guid: 3cf93841557325c428726a426ce0d806, type: 3}
-  patrolRadius: 20
-  maxPatrolHeight: 5
-  patrolCenter: {x: 0, y: 0, z: 0}
-  movementSpeed: 10
+  ensnaredValue: 5
+  fleeDistance: 50
+  patrolRadius: 2
+  movementSpeed: 1
   rotationSpeed: 200
-  waitTime: 0
+  waitTime: 2
   enemyPrefab: {fileID: 4360229774965797345, guid: 0fe98bae3a00c6a4292fb54a6c806736,
     type: 3}

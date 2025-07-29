@@ -18,11 +18,11 @@ MonoBehaviour:
   desc: "The \u201CP\u201D stands for \u201CPungent.\u201D May or may not have been
     born in a mustard bottle."
   image: {fileID: 21300000, guid: 12b12935196f36245a36372f722d3e7c, type: 3}
-  patrolRadius: 20
-  maxPatrolHeight: 5
-  patrolCenter: {x: 0, y: 0, z: 0}
-  movementSpeed: 10
+  ensnaredValue: 5
+  fleeDistance: 50
+  patrolRadius: 2
+  movementSpeed: 1
   rotationSpeed: 200
-  waitTime: 0
+  waitTime: 2
   enemyPrefab: {fileID: 7178465542825407722, guid: 69aaf33182cc299448573fd3070b8d0a,
     type: 3}
