@@ -32,6 +32,10 @@ public class GhostTrap : MonoBehaviour
             case E_TrapState.Thrown:
                 // Check for when the trap hits the ground 
                 // When the ground is hit, change the state to Activated
+                if (CheckForGround())
+                {
+                    ActivateTrap();
+                }
                 break;
             case E_TrapState.Activated:
                 // Check for the ghost within the trap radius
@@ -83,6 +87,18 @@ public class GhostTrap : MonoBehaviour
         rb.AddForce(throwDirection * trapThrowForce, ForceMode.VelocityChange);
     }
 
+    private bool CheckForGround()
+    {
+        if (EnemyManager.IsInitialized)
+        {
+            Vector3 ghostPos = EnemyManager.Instance.spawnedEnemy.transform.position;
+            if (gameObject.transform.position.y <= ghostPos.y - 5.0f)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
     private void ActivateTrap()
     {
         trapState = E_TrapState.Activated;

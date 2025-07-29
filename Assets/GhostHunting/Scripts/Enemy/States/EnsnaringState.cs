@@ -106,13 +106,20 @@ public class EnsnaringState : EnemyState
     private Vector3 GetRandomPoint()
     {
         Vector3 randomPoint = new Vector3();
+        int attempts = 0;
         do
         {
+            attempts++;
             float angle = Random.Range(0f, 360f);
             float x = patrolCenter.x + controller.enemyData.patrolRadius * Mathf.Cos(angle * Mathf.Deg2Rad);
             float z = patrolCenter.z + controller.enemyData.patrolRadius * Mathf.Sin(angle * Mathf.Deg2Rad);
             //float y = patrolCenter.y + Random.Range(playerTransform.position.y, playerTransform.position.y * 1.5f) + 0.5f; // Random height based on player position to avoid spawning underground
             randomPoint = new Vector3(x, 0.15f, z);
+            if (attempts > 15)
+            {
+                Debug.LogWarning("GetRandomPoint: Too many attempts to find a valid point, returning last generated point.");
+                break; // Exit the loop after too many attempts
+            }
         } while (!IsPointInValidRange(randomPoint)); // Keep generating until a valid point is found
 
         return randomPoint;

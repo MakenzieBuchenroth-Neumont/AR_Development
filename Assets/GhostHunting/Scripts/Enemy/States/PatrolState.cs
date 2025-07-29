@@ -66,13 +66,20 @@ public class PatrolState : EnemyState
     private Vector3 GetRandomPoint()
     {
         Vector3 randomPoint = new Vector3();
+        float tries = 0;
         do
         {
+            tries++;
             float angle = Random.Range(0f, 360f);
             float x = patrolCenter.x + enemyData.patrolRadius * Mathf.Cos(angle * Mathf.Deg2Rad);
             float z = patrolCenter.z + enemyData.patrolRadius * Mathf.Sin(angle * Mathf.Deg2Rad);
             //float y = patrolCenter.y + Random.Range(playerPosition.position.y, playerPosition.position.y * 1.5f) + 0.5f; // Random height based on player position to avoid spawning underground
             randomPoint = new Vector3(x, 0.15f, z);
+            if (tries > 15)
+            {
+                Debug.LogWarning("GetRandomPoint: Too many attempts to find a valid point, returning last generated point.");
+                break; // Avoid infinite loop if no valid point is found after many tries
+            }
         } while (!IsPointInValidRange(randomPoint)); // Keep generating until a valid point is found
 
         return randomPoint;
