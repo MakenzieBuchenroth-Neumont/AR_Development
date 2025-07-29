@@ -1,6 +1,8 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using UnityEngine.XR.ARFoundation;
+using Unity.XR.CoreUtils;
 
 // Will be assigned later
 public enum EnemyType 
@@ -36,15 +38,17 @@ public class EnemyManager : MonoBehaviour
     [Header("Spawn Settings")]
     [SerializeField] private float resetTimeMinutes = 2;
     [SerializeField] private float spawnRadius = 100f;
+    private XROrigin xrOrigin;
     private float timeRemaining = 0f;
     private bool timerRunning = false;
     public bool canScan = true;
     public Transform playerTransform;
+    
 
     [Header("UI Settings")]
     [SerializeField] private SwipeTracker swipeTracker;
     [SerializeField] private Button scanButton;
-
+   
     private EnemyManager() { }
     private void Awake()
     {
@@ -66,12 +70,19 @@ public class EnemyManager : MonoBehaviour
             Debug.LogError("EnemyDatabase is not assigned in the EnemyManager.");
             return;
         }
-
-        Camera arCamera = Camera.main;
-        if (arCamera)
+        xrOrigin = FindFirstObjectByType<XROrigin>();
+        if (xrOrigin)
         {
-            playerTransform = arCamera.transform;
+            Camera camera = xrOrigin.GetComponentInChildren<Camera>();
+            playerTransform = camera.transform;
         }
+
+        //Camera arCamera = Camera.main;
+        //if (arCamera)
+        //{
+        //    playerTransform = arCamera.transform;
+        //}
+
         //GameObject player = GameObject.FindGameObjectWithTag("Player");
         //if (player != null)
         //{
