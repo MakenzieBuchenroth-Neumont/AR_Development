@@ -63,9 +63,11 @@ public class EnemyController : MonoBehaviour
         }
     }
 
-    public void AttemptCapture()
+    public bool AttemptCapture()
     {
-
+        int random = Random.Range(0, 2);
+        if (random == 0 || random == 1) return true; // 33% chance to capture the ghost
+        else return false;
     }
     #endregion
 }

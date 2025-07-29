@@ -4,6 +4,11 @@ using UnityEngine.InputSystem;
 
 public class SwipeTracker : MonoBehaviour
 {
+    // Singleton instance
+    public static SwipeTracker _instance = null;
+    public static bool IsInitialized => _instance != null;
+    private SwipeTracker() { }
+
     [Header("Swipe Detection Settings")]
     [SerializeField] private float minSwipeDistance = 50f;
     [SerializeField] private float maxSwipeDuration = 2f; // Max time (in seconds) to consider a swipe
@@ -55,7 +60,16 @@ public class SwipeTracker : MonoBehaviour
     
     void Awake()
     {
-        // Initialize enemy manager reference
+        // Singleton Initialization
+        if (_instance == null)
+        {
+            _instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
 
         // Initialize line renderer
         if (lineRenderer == null)
@@ -144,7 +158,11 @@ public class SwipeTracker : MonoBehaviour
         if (swipePath.Count == 0 || Vector2.Distance(swipePath[^1], position) > 5f)
         {
             swipePath.Add(position);
-            TrackRotationProgress(position);
+            if (canEnsnare)
+            {
+                // Only perform rotation tracking if ensnaring is enabled
+                TrackRotationProgress(position);
+            }
             UpdateLine(position);
         }
     }
@@ -312,11 +330,25 @@ public class SwipeTracker : MonoBehaviour
         }
         screenCenter /= swipePath.Count;
 
+        if (screenCenter.x <= 1f && screenCenter.y <= 1f)
+        {
+            screenCenter.x *= Screen.width;
+            screenCenter.y *= Screen.height;
+        }
         // Convert to world direction
-        //Ray centerRay = mainCamera.ScreenPointToRay(screenCenter);
         Ray centerRay = arCamera.ScreenPointToRay(screenCenter);
         
+        
         Vector3 worldCenter = centerRay.origin + centerRay.direction * 5f; // pushed slightly forward
+
+        if (Physics.Raycast(centerRay, out RaycastHit centerHit, maxRaycastDistance))
+        {
+            worldCenter = centerHit.point;
+        }
+        else
+        {
+            worldCenter = centerRay.origin + centerRay.direction * detectionRadius;
+        }
         Debug.DrawRay(centerRay.origin, centerRay.direction * detectionRadius, Color.green, 2f);
 
         // Estimate swipe radius on screen
@@ -426,51 +458,42 @@ public class SwipeTracker : MonoBehaviour
     {
         if (trapPrefab == null || arCamera == null || ghostToCapture == null) return;
 
+        canThrowTrap = false;
         Vector3 spawnPosition = trapSpawnPoint.position != null
             ? trapSpawnPoint.position
             : arCamera.transform.position + arCamera.transform.forward * 0.5f;
 
+        spawnPosition = new Vector3(spawnPosition.x, spawnPosition.y, spawnPosition.z + 1.0f);
+
         GameObject trap = Instantiate(trapPrefab, spawnPosition, Quaternion.identity);
         if (trap.TryGetComponent<GhostTrap>(out GhostTrap ghostTrap))
         {
-            ghostTrap.ThrowTrap(spawnPosition, ghostToCapture, arCamera);
+            ghostTrap.ThrowTrap(spawnPosition, ghostToCapture, arCamera, trapThrowForce);
         }
         else
         {
             Debug.LogError("GhostTrap component is missing on the trap prefab.");
             return;
         }
-
-        if (trap.TryGetComponent<Rigidbody>(out Rigidbody rb))
-        {
-            Vector3 ghostPosition = ghostToCapture.transform.position;
-            Vector3 target = new Vector3(ghostPosition.x, 0.01f, ghostPosition.z);
-
-            // Distance and Direction to target
-            Vector3 toTarget = target - spawnPosition;
-            float distance = toTarget.magnitude;
-
-            // Get players look angle
-            float lookAngle = Vector3.Angle(arCamera.transform.forward, Vector3.ProjectOnPlane(toTarget, Vector3.up).normalized);
-
-            // Customize arc height based on look angle
-            float arcHeight = Mathf.Lerp(1.0f, 4.0f, lookAngle / 90f);
-
-            // Calculate upward offset to simulate arc
-            Vector3 upwardArc = Vector3.up * arcHeight;
-
-            // Final throw direction
-            Vector3 throwDirection = (toTarget.normalized + upwardArc).normalized;
-
-            // Apply force
-            rb.AddForce(throwDirection * trapThrowForce, ForceMode.VelocityChange);
-        }
     }
     public void SelectTrap()
     {
         trapSelected = true;
-        canThrowTrap = true;
-        Debug.Log("Trap selected. Swipe up to throw.");
+
+        if (EnemyManager.Instance)
+        {
+            if (EnemyManager.Instance.spawnedEnemyController &&
+                EnemyManager.Instance.spawnedEnemyController.isEnsnared)
+            {
+                canThrowTrap = true;
+            }
+        }
+    }
+    public void ResetState()
+    {
+        canEnsnare = false;
+        canThrowTrap = false;
+        trapSelected = false;
     }
     #endregion
 

@@ -22,12 +22,16 @@ public enum EnemyVariant
 
 public class EnemyManager : MonoBehaviour
 {
+    public static EnemyManager Instance { get; private set; }
+    public static bool IsInitialized => Instance != null;
+
     [Header("Enemy Settings")]
     [SerializeField] private EnemyDatabase enemyDb;
     [SerializeField] private int minGhosts = 3;
     [SerializeField] private int maxGhosts = 10;
     [SerializeField] private List<EnemyData> enemyList;
-    private GameObject spawnedEnemy;
+    public GameObject spawnedEnemy;
+    public EnemyController spawnedEnemyController;
 
     [Header("Spawn Settings")]
     [SerializeField] private float resetTimeMinutes = 2;
@@ -35,13 +39,26 @@ public class EnemyManager : MonoBehaviour
     private float timeRemaining = 0f;
     private bool timerRunning = false;
     public bool canScan = true;
-    private Transform playerTransform;
+    public Transform playerTransform;
 
     [Header("UI Settings")]
     [SerializeField] private SwipeTracker swipeTracker;
     [SerializeField] private Button scanButton;
 
-    // Only for testing
+    private EnemyManager() { }
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+            // Keep the manager persistent across scenes
+        }
+        else
+        {
+            Destroy(gameObject); // Ensure only one instance exists
+        }
+    }
     public void Start()
     {
         if (enemyDb == null)
@@ -50,15 +67,20 @@ public class EnemyManager : MonoBehaviour
             return;
         }
 
-        GameObject player = GameObject.FindGameObjectWithTag("Player");
-        if (player != null)
+        Camera arCamera = Camera.main;
+        if (arCamera)
         {
-            playerTransform = player.transform;
+            playerTransform = arCamera.transform;
         }
-        else
-        {
-            Debug.LogError("Player GameObject not found in the scene. EnemyManager requires a player reference.");
-        }
+        //GameObject player = GameObject.FindGameObjectWithTag("Player");
+        //if (player != null)
+        //{
+        //    playerTransform = player.transform;
+        //}
+        //else
+        //{
+        //    Debug.LogError("Player GameObject not found in the scene. EnemyManager requires a player reference.");
+        //}
 
         GenerateEnemyList(Random.Range(minGhosts, maxGhosts + 1));
         ResetTimer();
@@ -119,9 +141,25 @@ public class EnemyManager : MonoBehaviour
         controller.Initialize(enemyData);
         movement.Initialize(enemyData.movementSpeed, enemyData.rotationSpeed);
 
+        // Handle UI
         spawnedEnemy = enemyObj;
+        if (spawnedEnemy.TryGetComponent(out EnemyController enemyController))
+        {
+            spawnedEnemyController = enemyController;
+        }
+
+        if (PlayerInventory.IsInitialized)
+        {
+            PlayerInventory._instance.AddEncounteredGhost(spawnedEnemy);
+        }
+
         if (spawnedEnemy) canScan = false;
         ToggleButton(scanButton, false);
+
+        if (SwipeTracker.IsInitialized)
+        {
+            SwipeTracker._instance.canEnsnare = true;
+        }
     }
 
     #region Enemy Helpers
@@ -249,7 +287,7 @@ public class EnemyManager : MonoBehaviour
     }
     #endregion
 
-    #region Spawn & Capture Management
+    #region Spawn, Ensnare & Capture Management
     public void AttemptScan()
     {
         if (enemyList == null || enemyList.Count == 0)
@@ -269,12 +307,20 @@ public class EnemyManager : MonoBehaviour
         Vector3 randomPoint = Random.insideUnitSphere * spawnRadius;
         randomPoint.y = 0; // Keep it on the ground
         randomPoint += playerTransform.position; // Offset from player position
-        return randomPoint;
+        return new Vector3(randomPoint.x, 0.15f, randomPoint.z);
     }
     private void ResetTimer()
     {
         timeRemaining = resetTimeMinutes * 60f;
         timerRunning = true;
+    }
+    public void EnemyEscaped()
+    {
+        if (SwipeTracker.IsInitialized)
+        {
+            SwipeTracker._instance.canEnsnare = true;
+            SwipeTracker._instance.canThrowTrap = false;
+        }
     }
     public void EnemyCaptured()
     {
@@ -288,6 +334,11 @@ public class EnemyManager : MonoBehaviour
             spawnedEnemy = null;
             canScan = true;
             ToggleButton(scanButton, true);
+        }
+
+        if (SwipeTracker.IsInitialized)
+        {
+            SwipeTracker._instance.ResetState();
         }
     }
 

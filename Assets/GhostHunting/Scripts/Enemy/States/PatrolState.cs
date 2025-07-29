@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class PatrolState : EnemyState
 {
+    private EnemyController _controller;
     private Vector3 targetPosition;
     private Vector3 patrolCenter;
     private EnemyData enemyData;
@@ -12,22 +13,20 @@ public class PatrolState : EnemyState
     private float waitTimer = 0f;
     public PatrolState(EnemyController controller, EnemyData data) : base(controller) 
     {
+        this._controller = controller;
         this.enemyData = data;
         this.patrolCenter = controller.transform.position;
 
-        GameObject player = GameObject.FindGameObjectWithTag("Player");
-        if (player != null)
+        if (EnemyManager.Instance)
         {
-            this.playerPosition = player.transform;
-        }
-        else
-        {
-            Debug.LogError("Player GameObject not found in the scene. PatrolState requires a player reference.");
+            playerPosition = EnemyManager.Instance.playerTransform;
         }
     }
 
     public override void OnEnter() 
     {
+        _controller.ensnareProgress = 0f; // Reset ensnare progress when entering patrol state
+        _controller.isEnsnared = false;
         targetPosition = GetRandomPoint();
     }
     public override void OnExit() { }
@@ -72,12 +71,23 @@ public class PatrolState : EnemyState
             float angle = Random.Range(0f, 360f);
             float x = patrolCenter.x + enemyData.patrolRadius * Mathf.Cos(angle * Mathf.Deg2Rad);
             float z = patrolCenter.z + enemyData.patrolRadius * Mathf.Sin(angle * Mathf.Deg2Rad);
-            //float y = patrolCenter.y + Random.Range(0f, enemyData.maxPatrolHeight) + 0.5f; // TODO: Ground check to make sure we are spawning above ground
-            float y = patrolCenter.y + Random.Range(playerPosition.position.y, playerPosition.position.y * 1.5f) + 0.5f; // Random height based on player position to avoid spawning underground
-            randomPoint = new Vector3(x, y, z);
-        } while (IsPointInPlayerRadius(randomPoint)); // Keep generating until a valid point is found
+            //float y = patrolCenter.y + Random.Range(playerPosition.position.y, playerPosition.position.y * 1.5f) + 0.5f; // Random height based on player position to avoid spawning underground
+            randomPoint = new Vector3(x, 0.15f, z);
+        } while (!IsPointInValidRange(randomPoint)); // Keep generating until a valid point is found
 
         return randomPoint;
+    }
+
+    private bool IsPointInValidRange(Vector3 point)
+    {
+        if (playerPosition == null) return false; // If player position is not set, assume point is valid
+
+        float distance = Vector3.Distance(point, playerPosition.position);
+
+        float minDistance = 2f;
+        float maxDistance = _controller.enemyData.patrolRadius;
+
+        return distance > minDistance && distance <= maxDistance;
     }
 
     /// <summary>

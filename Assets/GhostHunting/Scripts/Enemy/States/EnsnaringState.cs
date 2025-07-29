@@ -5,6 +5,11 @@ public class EnsnaringState : EnemyState
 {
     private EnemyController enemyController;
     private Transform playerTransform;
+
+    private Vector3 targetPosition;
+    private Vector3 patrolCenter;
+    private bool isWaiting = false;
+    private float waitTimer = 0f;
     public EnsnaringState(EnemyController controller) : base(controller)
     {
         enemyController = controller;
@@ -36,7 +41,33 @@ public class EnsnaringState : EnemyState
         // Check how far away from the player the ghost is
         // If the ghost is far away from the player, move back to patrol state
         // Else, flee from the player
-        FleeFromPlayer();
+        //FleeFromPlayer();
+
+        if (targetPosition != null)
+        {
+            if (isWaiting)
+            {
+                waitTimer -= Time.deltaTime;
+
+                if (waitTimer <= 0f)
+                {
+                    // Done waiting — get new point and resume movement
+                    targetPosition = GetRandomPoint();
+                    isWaiting = false;
+                }
+                return; // Skip movement while waiting
+            }
+
+            controller.movement.MoveTo(targetPosition);
+
+            if (Vector3.Distance(controller.transform.position, targetPosition) < 0.5f)
+            {
+                // Reached target, start waiting
+                isWaiting = true;
+                waitTimer = controller.enemyData.waitTime;
+            }
+        }
+
     }
 
     public override void OnExit()
@@ -70,6 +101,33 @@ public class EnsnaringState : EnemyState
         fleeDirection.y = 0f;
 
         return fleeDirection.normalized;
+    }
+
+    private Vector3 GetRandomPoint()
+    {
+        Vector3 randomPoint = new Vector3();
+        do
+        {
+            float angle = Random.Range(0f, 360f);
+            float x = patrolCenter.x + controller.enemyData.patrolRadius * Mathf.Cos(angle * Mathf.Deg2Rad);
+            float z = patrolCenter.z + controller.enemyData.patrolRadius * Mathf.Sin(angle * Mathf.Deg2Rad);
+            //float y = patrolCenter.y + Random.Range(playerTransform.position.y, playerTransform.position.y * 1.5f) + 0.5f; // Random height based on player position to avoid spawning underground
+            randomPoint = new Vector3(x, 0.15f, z);
+        } while (!IsPointInValidRange(randomPoint)); // Keep generating until a valid point is found
+
+        return randomPoint;
+    }
+
+    private bool IsPointInValidRange(Vector3 point)
+    {
+        if (playerTransform == null) return false; // If player position is not set, assume point is valid
+
+        float distance = Vector3.Distance(point, playerTransform.position);
+
+        float minDistance = 2f;
+        float maxDistance = enemyController.enemyData.patrolRadius;
+
+        return distance > minDistance && distance <= maxDistance;
     }
     private bool CheckEnsnareComplete()
     {

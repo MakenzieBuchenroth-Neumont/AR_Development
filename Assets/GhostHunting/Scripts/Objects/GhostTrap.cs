@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class GhostTrap : MonoBehaviour
@@ -12,9 +13,9 @@ public class GhostTrap : MonoBehaviour
     }
    
     [Header("Trapping Settings")]
-    [SerializeField] private float trapRadius = 5f; // Radius used to see if any ghosts are within the traps area
     [SerializeField] private float trapDuration = 5f; // Duration of how long the trapping will take
-    private E_TrapState trapState = E_TrapState.None; 
+    private E_TrapState trapState = E_TrapState.None;
+    private GameObject ghost;
 
     private void Start()
     {
@@ -54,8 +55,86 @@ public class GhostTrap : MonoBehaviour
         }
     }
 
-    public void ThrowTrap(Vector3 position, GameObject target, Camera arCamera)
+    public void ThrowTrap(Vector3 position, GameObject ghostToCapture, Camera arCamera, float trapThrowForce)
     {
+        trapState = E_TrapState.Thrown;
+        ghost = ghostToCapture;
+        Vector3 ghostPosition = ghostToCapture.transform.position;
+        Vector3 target = new Vector3(ghostPosition.x, 0.01f, ghostPosition.z);
 
+        // Distance and Direction to target
+        Vector3 toTarget = target - position;
+        float distance = toTarget.magnitude;
+
+        // Get players look angle
+        float lookAngle = Vector3.Angle(arCamera.transform.forward, Vector3.ProjectOnPlane(toTarget, Vector3.up).normalized);
+
+        // Customize arc height based on look angle
+        float arcHeight = Mathf.Lerp(1.0f, 2.0f, lookAngle / 90f);
+
+        // Calculate upward offset to simulate arc
+        Vector3 upwardArc = Vector3.up * arcHeight;
+
+        // Final throw direction
+        Vector3 throwDirection = (toTarget.normalized + upwardArc).normalized;
+
+        // Apply force
+        Rigidbody rb = GetComponent<Rigidbody>();
+        rb.AddForce(throwDirection * trapThrowForce, ForceMode.VelocityChange);
+    }
+
+    private void ActivateTrap()
+    {
+        trapState = E_TrapState.Activated;
+        if (EnemyManager.Instance != null)
+        {
+            EnemyController controller = EnemyManager.Instance.spawnedEnemy.GetComponent<EnemyController>();
+            if (!controller)
+            {
+                Debug.LogError("EnemyController not found on spawned enemy.");
+                return;
+            }
+
+            if (controller.AttemptCapture())
+            {
+                CaptureGhost(controller);
+            }
+            else
+            {
+                FailTrap(controller);
+            }
+        }
+    }
+
+    private void CaptureGhost(EnemyController _controller)
+    {
+        trapState = E_TrapState.Success;
+        _controller.ChangeState(new CapturedState(_controller));
+        DestroyTrapAfterDuration(2f);
+    }
+
+    private void FailTrap(EnemyController _controller)
+    {
+        trapState = E_TrapState.Failed;
+        if (EnemyManager.Instance)
+        {
+            EnemyManager.Instance.EnemyEscaped();
+        }
+        _controller.ChangeState(new PatrolState(_controller, _controller.enemyData));
+        DestroyTrapAfterDuration(2f);
+    }
+
+    private async void DestroyTrapAfterDuration(float duration)
+    {
+        await Task.Delay((int)(duration * 1000));
+        Destroy(gameObject);
+    }
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Floor") && trapState != E_TrapState.Activated)
+        {
+            // Activate the trap when it hits the floor
+            ActivateTrap();
+        }
     }
 }

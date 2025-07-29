@@ -21,8 +21,8 @@ public class EnemyData : ScriptableObject
 
     // Movement Settings
     [SerializeField]
-    [Range(10, 20)]
-    public float patrolRadius = 15;
+    [Range(2, 10)]
+    public float patrolRadius = 5;
     [Range(1, 3)]
     public float movementSpeed = 2;
     [Range(150, 250)]

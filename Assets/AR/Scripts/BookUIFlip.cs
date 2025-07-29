@@ -70,9 +70,20 @@ public class BookUIFlip : MonoBehaviour {
 		ghostName.GetComponentInChildren<TMP_Text>().text = data.name;
 		image.GetComponentInChildren<Image>().sprite = data.image;
 		desc.GetComponentInChildren<TMP_Text>().text = data.desc;
-		//encountered.GetComponentInChildren<TMP_Text>().text = PlayerPrefs.Load(data.encountered);
-		//caught.GetComponentInChildren<TMP_Text>().text = PlayerPrefs.Load(data.caught);
-	}
+
+		int encounteredAmount = 0;
+		int caughtAmount = 0;
+
+        if (PlayerInventory.IsInitialized)
+		{
+			encounteredAmount = PlayerInventory._instance.GetEncounteredAmountByType(data.type, data.variant);
+			caughtAmount = PlayerInventory._instance.GetCapturedAmountByType(data.type, data.variant);
+		}
+		encountered.GetComponentInChildren<TMP_Text>().text = $"Encountered: {encounteredAmount}";
+		caught.GetComponentInChildren<TMP_Text>().text = $"Caught: {caughtAmount}";
+        //encountered.GetComponentInChildren<TMP_Text>().text = PlayerPrefs.Load(data.encountered);
+        //caught.GetComponentInChildren<TMP_Text>().text = PlayerPrefs.Load(data.caught);
+    }
 
 	public void toggleVoid() {
 		if (voidEnemyData == null || page >= voidEnemyData.Length || voidEnemyData[page] == null) {

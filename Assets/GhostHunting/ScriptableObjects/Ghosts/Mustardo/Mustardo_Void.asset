@@ -20,7 +20,7 @@ MonoBehaviour:
   image: {fileID: 21300000, guid: 12b12935196f36245a36372f722d3e7c, type: 3}
   ensnaredValue: 5
   fleeDistance: 50
-  patrolRadius: 10
+  patrolRadius: 2
   movementSpeed: 1
   rotationSpeed: 200
   waitTime: 2
