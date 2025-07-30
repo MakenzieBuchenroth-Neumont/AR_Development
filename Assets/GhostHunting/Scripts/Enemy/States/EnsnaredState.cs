@@ -9,14 +9,19 @@ public class EnsnaredState : EnemyState
     {
         this._controller = controller;
 
-        GameObject player = GameObject.FindGameObjectWithTag("Player");
-        if (player != null)
+        if (EnemyManager.IsInitialized)
         {
-            _playerTransform = player.transform;
+            _playerTransform = EnemyManager.Instance.playerTransform;
         }
         else
         {
-            Debug.LogError("Player not found in the scene.");
+            // Fallback to player tag
+            GameObject player = GameObject.FindGameObjectWithTag("Player");
+            if (player != null)
+            {
+                _playerTransform = player.transform;
+            }
+          
         }
     }
     public override void UpdateState()
