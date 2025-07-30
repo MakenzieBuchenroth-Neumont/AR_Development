@@ -34,7 +34,8 @@ public class CapturedState : EnemyState
         if (PlayerInventory.IsInitialized)
         {
             PlayerInventory._instance.AddGhostToInventory(_controller.gameObject);
-        }
+
+		}
         else
         {
             Debug.LogError("PlayerInventory is not initialized. Cannot add ghost to inventory.");

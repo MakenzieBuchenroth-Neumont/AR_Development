@@ -365,7 +365,9 @@ public class EnemyManager : MonoBehaviour
         {
             canScan = true;
             ToggleButton(scanButton, true);
-        }
+			UiManager.Singleton.TurnOff(UiManager.UIItems.TrapSelection);
+			UiManager.Singleton.TurnOn(UiManager.UIItems.Hotbar);
+		}
         else
         {
             spawnedEnemy = null;
