@@ -38,6 +38,7 @@ public class EnemyManager : MonoBehaviour
     [Header("Spawn Settings")]
     [SerializeField] private float resetTimeMinutes = 2;
     [SerializeField] private float spawnRadius = 100f;
+    [SerializeField] private float minDistFromPlayer = 5f;
     private XROrigin xrOrigin;
     private float timeRemaining = 0f;
     private bool timerRunning = false;
@@ -75,6 +76,11 @@ public class EnemyManager : MonoBehaviour
         {
             Camera camera = xrOrigin.GetComponentInChildren<Camera>();
             playerTransform = camera.transform;
+        }
+
+        if (minDistFromPlayer >= spawnRadius)
+        {
+            spawnRadius = minDistFromPlayer + 1f;
         }
 
         //Camera arCamera = Camera.main;
@@ -117,7 +123,6 @@ public class EnemyManager : MonoBehaviour
         if (spawnedEnemy != null)
         {
             CheckIfEnsnared();
-            CheckIfCaptured();
         }
     }
 
@@ -316,11 +321,31 @@ public class EnemyManager : MonoBehaviour
     }
     private Vector3 GenerateRandomSpawnPoint()
     {
-        Vector3 randomPoint = Random.insideUnitSphere * spawnRadius;
-        randomPoint.y = 0; // Keep it on the ground
-        randomPoint += playerTransform.position; // Offset from player position
-        return new Vector3(randomPoint.x, 0.15f, randomPoint.z);
+        Vector3 randomPoint;
+        float sqrMinDist = minDistFromPlayer * minDistFromPlayer;
+        float sqrSpawnRadius = spawnRadius * spawnRadius;
+        float attempts = 0;
+
+        do
+        {
+            attempts++;
+            Vector3 candidate = Random.insideUnitSphere * spawnRadius;
+            candidate.y = 0;
+
+            randomPoint = playerTransform.position + candidate;
+            if (attempts >= 10)
+            {
+                Debug.LogWarning("Maximum attempts reached, initializing any point within radius");
+                randomPoint = candidate;
+            }
+        }
+        while ((randomPoint - playerTransform.position).sqrMagnitude < sqrMinDist ||
+           (randomPoint - playerTransform.position).sqrMagnitude > sqrSpawnRadius);
+
+        float randomY = Random.Range(0.15f, 1.0f);
+        return new Vector3(randomPoint.x, randomY, randomPoint.z);
     }
+
     private void ResetTimer()
     {
         timeRemaining = resetTimeMinutes * 60f;
@@ -378,14 +403,5 @@ public class EnemyManager : MonoBehaviour
 		}
 
 	}
-    private void CheckIfCaptured()
-    {
-        EnemyController controller = spawnedEnemy.GetComponent<EnemyController>();
-        if (controller != null && controller.isCaptured)
-        {
-            // Handle later
-        }
-
-    }
     #endregion
 }
